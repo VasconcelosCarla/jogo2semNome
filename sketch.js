@@ -11,7 +11,7 @@ var bg, bgImg;
 var apoio
 var blug, blugImg, bg2, bg2Img;
 var plataforma, plataformaGroup;
-var buttom, buttonImg;
+var buttom, buttomImg;
 
 //Função para carregamento de animação e imagens
 function preload(){
@@ -19,7 +19,7 @@ function preload(){
   blugImg = loadAnimation("./assets/blugright.png", "./assets/blug2right.png", "./assets/blug3right.png",
    "./assets/blug4right.png", "./assets/blug3right.png", "./assets/blug2right.png", "./assets/blugright.png");
    bg2Img = loadImage("./assets/bg2.png");
-  buttom = createImg("button.gif");
+  buttomImg = loadAnimation("./assets/botao1.png", "./assets/botao2.png");
   }
 
 
@@ -36,8 +36,10 @@ function setup() {
 
   blug = createSprite(400, 700);
   blug.addAnimation("rigth", blugImg);
-
-  buttom.position(400, 400);
+  
+  buttom = createSprite(400, 400);
+  buttom.addAnimation("botão", buttomImg)
+  buttom.scale = 3;
 
   
    
@@ -45,34 +47,57 @@ function setup() {
 
 function draw() {
   background(200);
-  console.log(bg.y);
+  //console.log(bg.y);
+  console.log(gameState);
+  if(gameState === WAIT){
+    blug.velocityY = 0;
 
-  if(keyDown("space")){
-    bg.y = bg.y+6;
-    bg2.y = bg2.y+6;
-    blug.velocityY = -5;
+   
+
   }
+  if(mousePressedOver(buttom)){
+    gameState = PLAY;
+    
+  }
+  else if(gameState === PLAY){
+    buttom.visible = false;
+    if(keyDown("space")){
+      bg.y = bg.y+6;
+      bg2.y = bg2.y+6;
+      blug.velocityY = -5;
+    }
+
+    blug.velocityY = blug.velocityY + 0.5;
+    if(keyDown("left")){
+      blug.x = blug.x - 5;
+     
+    }
+    if(keyDown("right")){
+      blug.x = blug.x + 5;
+     
+    }
+    gerarPlataforma();
+  }
+  else if(gameState === END){
+
+
+
+  }
+
   
-  blug.velocityY = blug.velocityY + 0.5;
-  if(keyDown("left")){
-    blug.x = blug.x - 5;
-   
-  }
-  if(keyDown("right")){
-    blug.x = blug.x + 5;
-   
-  }
+  
+ 
   drawSprites();
-  gerarPlataforma()
+  
   blug.collide(plataformaGroup);
 }
 function gerarPlataforma(){
   
   if(frameCount % 80 ===0){
-    plataforma = createSprite(200, 400, 100, 20);
+    plataforma = createSprite(200, 100, 120, 20);
     plataforma.x = Math.round(random(0, 800));
-    plataforma.velocityY = 1;
-    plataforma.timelife = 220;
+    plataforma.velocityY = 3;
+    plataforma.timelife = 200;
     plataformaGroup.add(plataforma);
     
   }
