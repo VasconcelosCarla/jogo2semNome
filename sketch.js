@@ -2,10 +2,16 @@
 //###Joguinho com movimentação na vertical###
 
 //declaração de variáveis
+var WAIT= 0;
+var PLAY = 1;
+var END = 2;
+var gameState = WAIT;
+
 var bg, bgImg;
 var apoio
 var blug, blugImg, bg2, bg2Img;
 var plataforma, plataformaGroup;
+var buttom, buttonImg;
 
 //Função para carregamento de animação e imagens
 function preload(){
@@ -13,6 +19,7 @@ function preload(){
   blugImg = loadAnimation("./assets/blugright.png", "./assets/blug2right.png", "./assets/blug3right.png",
    "./assets/blug4right.png", "./assets/blug3right.png", "./assets/blug2right.png", "./assets/blugright.png");
    bg2Img = loadImage("./assets/bg2.png");
+  buttom = createImg("button.gif");
   }
 
 
@@ -29,6 +36,9 @@ function setup() {
 
   blug = createSprite(400, 700);
   blug.addAnimation("rigth", blugImg);
+
+  buttom.position(400, 400);
+
   
    
 }
@@ -58,7 +68,7 @@ function draw() {
 }
 function gerarPlataforma(){
   
-  if(frameCount % 60 ===0){
+  if(frameCount % 80 ===0){
     plataforma = createSprite(200, 400, 100, 20);
     plataforma.x = Math.round(random(0, 800));
     plataforma.velocityY = 1;
