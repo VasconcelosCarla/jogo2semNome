@@ -5,6 +5,7 @@
 var bg, bgImg;
 var apoio
 var blug, blugImg, bg2, bg2Img;
+var plataforma, plataformaGroup;
 
 //Função para carregamento de animação e imagens
 function preload(){
@@ -24,7 +25,7 @@ function setup() {
   bg2.addImage("terra", bg2Img);
   bg2.scale = 4;
   //bg.velocityY = 1;
-  
+  plataformaGroup = createGroup();
 
   blug = createSprite(400, 700);
   blug.addAnimation("rigth", blugImg);
@@ -51,6 +52,18 @@ function draw() {
     blug.x = blug.x + 5;
    
   }
-  
   drawSprites();
+  gerarPlataforma()
+  blug.collide(plataformaGroup);
+}
+function gerarPlataforma(){
+  
+  if(frameCount % 60 ===0){
+    plataforma = createSprite(200, 400, 100, 20);
+    plataforma.x = Math.round(random(0, 800));
+    plataforma.velocityY = 1;
+    plataforma.timelife = 220;
+    plataformaGroup.add(plataforma);
+    
+  }
 }
