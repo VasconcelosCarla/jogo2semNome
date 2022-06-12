@@ -37,10 +37,20 @@ function draw() {
   console.log(bg.y);
 
   if(keyDown("space")){
-    bg.y = bg.y+5;
-    bg2.y = bg2.y+5;
+    bg.y = bg.y+6;
+    bg2.y = bg2.y+6;
+    blug.velocityY = -5;
   }
-
+  
+  blug.velocityY = blug.velocityY + 0.5;
+  if(keyDown("left")){
+    blug.x = blug.x - 5;
+   
+  }
+  if(keyDown("right")){
+    blug.x = blug.x + 5;
+   
+  }
   
   drawSprites();
 }
