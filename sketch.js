@@ -14,6 +14,8 @@ var plataforma, plataformaGroup, plataformaImg, plataformaInvisivel, plataformaI
 var buttom, buttomImg;
 var instucoes, instucoesImg;
 
+var fimDejogo, fimDejogoImg;
+
 
 //Função para carregamento de animação e imagens
 function preload(){
@@ -24,6 +26,7 @@ function preload(){
   buttomImg = loadAnimation("./assets/botao1.png", "./assets/botao2.png");
   plataformaImg = loadImage("./assets/plataforma.png");
   instucoesImg = loadImage("./assets/instuções.png");
+  fimDejogoImg = loadImage("./assets/GAMEOVER.png");
   }
 
 
@@ -46,6 +49,11 @@ function setup() {
   instucoes = createSprite(400, 300);
   instucoes.addImage(instucoesImg);
   instucoes.scale = 1.2;
+
+  fimDejogo = createSprite(400, 300);
+  fimDejogo.addImage(fimDejogoImg);
+  fimDejogo.scale = 1.2;
+  fimDejogo.visible = false;
   
   buttom = createSprite(395, 280);
   buttom.addAnimation("botão", buttomImg)
@@ -62,6 +70,7 @@ function setup() {
 function draw() {
   background(200);
   drawSprites();
+  console.log(blug.y);
   
   //console.log(bg.y);
   console.log(gameState);
@@ -82,7 +91,7 @@ function draw() {
     buttom.visible = false;
     bg.velocityY = 2;
     bg2.velocityY = 2;
-    if(keyDown("space")){
+    if(keyDown("space") && blug.y>250){
       
       blug.velocityY = -15;
       blug.velocityX = 0;
@@ -98,10 +107,16 @@ function draw() {
      
     }
     gerarPlataforma();
+
+    if(blug.y>810){
+      gameState = END
+    }
   }
   else if(gameState === END){
-
-
+    fimDejogo.visible = true;
+    bg.velocityY = 0;
+    bg2.velocityY = 0;
+    plataformaGroup.setVelocityYEach = 0;
 
   }
 
@@ -137,4 +152,10 @@ function gerarPlataforma(){
   }
   
   
+}
+
+function restart(){
+  gameState = PLAY;
+
+
 }
