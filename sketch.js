@@ -13,8 +13,10 @@ var blug, blugImg, bg2, bg2Img;
 var plataforma, plataformaGroup, plataformaImg, plataformaInvisivel, plataformaInvisivelGroup;
 var buttom, buttomImg;
 var instucoes, instucoesImg;
+var plataformaInicial, plataformaInicialInvisivel;
 
 var fimDejogo, fimDejogoImg;
+var barraInvisivel, barraInvisivel2;
 
 
 //Função para carregamento de animação e imagens
@@ -41,10 +43,27 @@ function setup() {
   //bg.velocityY = 1;
   plataformaGroup = createGroup();
   plataformaInvisivelGroup = createGroup();
+  
+  
 
   blug = createSprite(400, 500);
   blug.addAnimation("rigth", blugImg);
   blug.scale = 1.5;
+  
+
+  plataformaInicial = createSprite(400, 500);
+  plataformaInicial.addImage("inicial",plataformaImg);
+  plataformaInicial.scale = 2;
+  plataformaInicial.velocityY = 2;
+  plataformaInicial.velocityX = 0;
+  plataformaInicialInvisivel = createSprite(400, 500, 30, 10);
+  plataformaInicialInvisivel.visible = false;
+
+  
+  barraInvisivel = createSprite(400, 700, 20, 20);
+  barraInvisivel.visible = false;
+  barraInvisivel2 = createSprite(400, 350, 20, 20);
+  barraInvisivel2.visible = false;
 
   instucoes = createSprite(400, 300);
   instucoes.addImage(instucoesImg);
@@ -70,14 +89,19 @@ function setup() {
 function draw() {
   background(200);
   drawSprites();
-  console.log(blug.y);
+  plataformaInicialInvisivel.y = plataformaInicial.y;
+  blug.velocityY = blug.velocityY + 0.9;
+  
+  plataformaInicial.bounceOff(barraInvisivel);
+  plataformaInicial.bounceOff(barraInvisivel2);
+
   
   //console.log(bg.y);
   console.log(gameState);
   if(gameState === WAIT){
     
     blug.velocityY = 0;
-
+    
    
 
   }
@@ -89,15 +113,27 @@ function draw() {
   else if(gameState === PLAY){
     instucoes.visible = false;
     buttom.visible = false;
-    bg.velocityY = 2;
-    bg2.velocityY = 2;
-    if(keyDown("space") && blug.y>250){
+    bg.velocityY = 1;
+    bg2.velocityY = 1;
+    plataformaInicial.velocityY= 5;
+    plataformaInicialInvisivel.velocityY = 5;
+
+   if(blug.collide(plataformaInvisivelGroup) || blug.collide(plataformaInicialInvisivel)){
+      if(keyDown("space") && blug.y>250){
+
+        plataformaInicialInvisivel.destroy();
+        plataformaInicial.destroy();
+        blug.velocityY = -18;
+        blug.velocityX = 0;
+      }
+    }
+    /*if(keyDown("space") && blug.y>250){
       
       blug.velocityY = -15;
       blug.velocityX = 0;
-    }
+    }*/
 
-    blug.velocityY = blug.velocityY + 0.8;
+    
     if(keyDown("left")){
       blug.x = blug.x - 5;
      
@@ -120,18 +156,20 @@ function draw() {
 
   }
 
-  
+  if(mousePressedOver(fimDejogo)){
+    restart();
+  }
   
  
   
-  
+  blug.collide(plataformaInicialInvisivel);
   blug.collide(plataformaInvisivelGroup);
 }
 function gerarPlataforma(){
   
   if(frameCount % 80 ===0){
 
-    plataforma = createSprite(200, 250, 120, 20);
+    plataforma = createSprite(200, 550, 120, 20);
     plataforma.x = Math.round(random(200, 600));
     plataforma.velocityY = 2;
     
@@ -139,7 +177,7 @@ function gerarPlataforma(){
     plataforma.scale = 2;
     plataformaGroup.add(plataforma);
 
-    plataformaInvisivel = createSprite(200, 250, 120, 10);
+    plataformaInvisivel = createSprite(200, 550, 120, 10);
     plataformaInvisivel.x = plataforma.x;
     plataformaInvisivel.velocityY = 2;
     
@@ -156,6 +194,13 @@ function gerarPlataforma(){
 
 function restart(){
   gameState = PLAY;
+  fimDejogo.visible = false;
+  bg.y = -1600;
+  bg2.y = -1600
+  textSize(30);
+  fill("black");
+  strokeWeight(3)
+  text("ainda implementando isso", 400, 400);
 
 
 }
