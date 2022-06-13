@@ -12,6 +12,7 @@ var apoio
 var blug, blugImg, bg2, bg2Img;
 var plataforma, plataformaGroup, plataformaImg, plataformaInvisivel, plataformaInvisivelGroup;
 var buttom, buttomImg;
+var instucoes, instucoesImg;
 
 
 //Função para carregamento de animação e imagens
@@ -22,6 +23,7 @@ function preload(){
    bg2Img = loadImage("./assets/bg2.png");
   buttomImg = loadAnimation("./assets/botao1.png", "./assets/botao2.png");
   plataformaImg = loadImage("./assets/plataforma.png");
+  instucoesImg = loadImage("./assets/instuções.png");
   }
 
 
@@ -39,12 +41,16 @@ function setup() {
 
   blug = createSprite(400, 500);
   blug.addAnimation("rigth", blugImg);
-  
-  buttom = createSprite(400, 400);
-  buttom.addAnimation("botão", buttomImg)
-  buttom.scale = 3;
 
-  blug.setCollider("circle", 0, 0, 20);
+  instucoes = createSprite(400, 300);
+  instucoes.addImage(instucoesImg);
+  instucoes.scale = 1.2;
+  
+  buttom = createSprite(395, 280);
+  buttom.addAnimation("botão", buttomImg)
+  buttom.scale = 2.5;
+
+  blug.setCollider("rectangle", 0, 0, 40, 50);
   blug.debug = true;
   
 
@@ -54,28 +60,34 @@ function setup() {
 
 function draw() {
   background(200);
+  drawSprites();
+  
   //console.log(bg.y);
   console.log(gameState);
   if(gameState === WAIT){
+    
     blug.velocityY = 0;
 
    
 
   }
   if(mousePressedOver(buttom)){
+   
     gameState = PLAY;
     
   }
   else if(gameState === PLAY){
+    instucoes.visible = false;
     buttom.visible = false;
-    bg.velocityY = 1;
-    bg2.velocityY = 1;
+    bg.velocityY = 2;
+    bg2.velocityY = 2;
     if(keyDown("space")){
       
-      blug.velocityY = -10;
+      blug.velocityY = -15;
+      blug.velocityX = 0;
     }
 
-    blug.velocityY = blug.velocityY + 0.5;
+    blug.velocityY = blug.velocityY + 0.8;
     if(keyDown("left")){
       blug.x = blug.x - 5;
      
@@ -95,7 +107,7 @@ function draw() {
   
   
  
-  drawSprites();
+  
   
   blug.collide(plataformaInvisivelGroup);
 }
@@ -104,8 +116,8 @@ function gerarPlataforma(){
   if(frameCount % 80 ===0){
 
     plataforma = createSprite(200, 250, 120, 20);
-    plataforma.x = Math.round(random(0, 800));
-    plataforma.velocityY = 1;
+    plataforma.x = Math.round(random(200, 600));
+    plataforma.velocityY = 2;
     
     plataforma.addImage("plataforma", plataformaImg);
     plataforma.scale = 2;
@@ -113,7 +125,7 @@ function gerarPlataforma(){
 
     plataformaInvisivel = createSprite(200, 250, 120, 10);
     plataformaInvisivel.x = plataforma.x;
-    plataformaInvisivel.velocityY = 1;
+    plataformaInvisivel.velocityY = 2;
     
    
     plataformaInvisivelGroup.add(plataformaInvisivel);
