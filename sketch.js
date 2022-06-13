@@ -41,6 +41,7 @@ function setup() {
 
   blug = createSprite(400, 500);
   blug.addAnimation("rigth", blugImg);
+  blug.scale = 1.5;
 
   instucoes = createSprite(400, 300);
   instucoes.addImage(instucoesImg);
